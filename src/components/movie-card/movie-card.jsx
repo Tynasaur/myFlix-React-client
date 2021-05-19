@@ -1,32 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import React from "react";
+import PropTypes from "prop-types";
+import { Card, Button } from "react-bootstrap";
+
+import { Link } from "react-router-dom";
 
 export class MovieCard extends React.Component {
   render() {
-    const { movie, onMovieClick } = this.props;
-    
+    const { movie } = this.props;
+    // const FavoriteComponent = props.FavoriteComponent;
+
     return (
       <Card>
-        <Card.Img variant='top' src={movie.ImagePath} />
-        <Card.Body>
-          <Card.Title>{movie.Title}</Card.Title>
-          <Card.Text>{movie.Description}</Card.Text>
-          <Button onClick={() => onMovieClick(movie)} variant='link'>Open</Button>
-        </Card.Body>
+        <div className="fav-image">
+          <Card.Img variant="top" src={movie.ImagePath} />
+          <div className="overlay d-flex align-items-center"></div>
+          <Card.Body>
+            <Card.Title>{movie.Title}</Card.Title>
+            <Card.Text>{movie.Description}</Card.Text>
+            <Link to={`/movies/${movie._id}`}>
+              <Button variant="link">Open</Button>
+            </Link>
+            {/* <FavoriteComponent /> */}
+          </Card.Body>
+        </div>
       </Card>
-      
     );
   }
 }
-{/* <div  className="movie-card">{movie.Title}</div> */}
 
 MovieCard.propTypes = {
   movie: PropTypes.shape({
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
-    ImagePath: PropTypes.string.isRequired
+    ImagePath: PropTypes.string.isRequired,
   }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
 };
