@@ -1,12 +1,13 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import Form from "react-bootstrap/Form";
+import { Form, FormControl } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal";
+import Container from "react-bootstrap/Container";
 
 export class ProfileView extends React.Component {
   constructor(props) {
@@ -15,70 +16,250 @@ export class ProfileView extends React.Component {
       username: "",
       password: "",
       email: "",
+      UsernameError: "",
+      EmailError: "",
+      PasswordError: "",
       favoriteMovies: [],
     };
   }
 
-  getUsers(token) {
+  componentDidMount() {
+    let accessToken = localStorage.getItem("token");
+    this.getUser(accessToken);
+  }
+
+  getUser(token) {
+    // console.log(localStorage.getItem("user"));
+    let url =
+      "https://thainas-myflix.herokuapp.com/users/" +
+      localStorage.getItem("user");
     axios
-      .get("https://thainas-myflix.herokuapp.com/users", {
+      .get(url, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        // Assign the result to the state
+        //console.log(response);
         this.setState({
-          users: response.data.Username,
+          username: response.data.Username,
           password: response.data.Password,
           email: response.data.Email,
           favoriteMovies: response.data.FavoriteMovies,
         });
+      });
+  }
+
+  removeFavoriteMovie(movie) {
+    const token = localStorage.getItem("token");
+    const url =
+      "https://thainas-myflix.herokuapp.com/users/" +
+      localStorage.getItem("user") +
+      "/movies/" +
+      m._id;
+    axios
+      .delete(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response);
+        this.componentDidMount();
+        // location.reload();
+        alert(movie.Title + " has been removed from your Favorites.");
+      });
+  }
+
+  onLoggedOut() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    this.setState({
+      user: null,
+    });
+    console.log("logout successful");
+    alert("You have been successfully logged out");
+    window.open("/", "_self");
+  }
+
+  handleDelete() {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    axios
+      .delete(`https://thainas-myflix.herokuapp.com/users/${user}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        alert(user + " has been deleted.");
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        window.location.pathname = "/";
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
+  handleUpdate(e) {
+    let token = localStorage.getItem("token");
+    // console.log({ token });
+    let user = localStorage.getItem("user");
+    console.log(this.state);
+    // let setisValid = this.formValidation();
+    {
+      console.log(this.props);
+      console.log(this.state);
+      axios
+        .put(
+          `https://thainas-myflix.herokuapp.com/users/${user}`,
+          {
+            Username: this.state.Username,
+            Password: this.state.Password,
+            Email: this.state.Email,
+          },
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+        .then((response) => {
+          const data = response.data;
+          localStorage.setItem("user", data.Username);
+          console.log(data);
+          alert(user + " has been updated.");
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+        });
+    }
+  }
 
+  handleChange(e) {
+    let { name, value } = e.target;
+    // console.log(name, value);
+    this.setState({
+      [name]: value,
+    });
+  }
 
   render() {
     const { movies } = this.props;
 
-    
-  
+    const FavoriteMovies = movies.filter((movie) => {
+      // return this.state.FavoriteMovies.includes(m._id);
+    });
+    console.log(FavoriteMovies);
 
-    if (!movies) alert("Please sign in, or create account.");
+    if (!movies) alert("Please sign in");
     return (
-      <Row className="profile-view">
-        <Card>
-          <Card.Body>
-            <Card.Text></Card.Text>
-          </Card.Body>
+      <div className="userProfile" style={{ display: "flex" }}>
+        <Container>
+          <Row>
+            <Col>
+              <Row>
+                <div className="favoriteMovies">
+                  <h5>Favorite Movies</h5>
+                  {FavoriteMovies.map((movie) => {
+                    return (
+                      <div key={m._id}>
+                        <Card>
+                          <Card.Img variant="top" src={movie.ImagePath} />
+                          <Card.Body>
+                            <Link to={`/movies/${m._id}`}>
+                              <Card.Title>{movie.Title}</Card.Title>
+                            </Link>
+                          </Card.Body>
+                        </Card>
+                        <Button onClick={() => this.removeFavoriteMovie(movie)}>
+                          Remove
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </Row>
 
-          <Form.Group>
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Username"
-              autoComplete="username"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Group>
+              <Row>
+                <Form>
+                  <Form.Group controlId="formUsername">
+                    <h5>Username: </h5>
+                    <Form.Label>{this.state.username}</Form.Label>
+                  </Form.Group>
+                  <Form.Group controlId="formEmail">
+                    <h5>Email:</h5>
+                    <Form.Label>{this.state.email}</Form.Label>
+                  </Form.Group>
+                  <Form.Group controlId="formDate"></Form.Group>
+                </Form>
+              </Row>
+              <Row>
+                <Button
+                  onClick={() => {
+                    this.onLoggedOut();
+                  }}
+                >
+                  Logout
+                </Button>
+              </Row>
+              <Row>
+                <Button onClick={() => this.handleDelete()}>
+                  Delete Account
+                </Button>
+              </Row>
+            </Col>
+            <Col>
+              <Row>
+                <Form.Group>
+                  <h5>Username:</h5>
+                  <FormControl
+                    size="sm"
+                    type="text"
+                    name="Username"
+                    value={this.state.Username}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Change username"
+                  />
+                </Form.Group>
+              </Row>
 
-          <Form.Group>
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
+              <Row>
+                <Form.Group controlId="formPassword">
+                  <h5>Password: </h5>
+                  <FormControl
+                    size="sm"
+                    type="password"
+                    name="Password"
+                    value={this.state.Password}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Enter your password or Change password"
+                  />
+                </Form.Group>
+              </Row>
 
-          <Form.Group>
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-        </Card>
-      </Row>
+              <Row>
+                <Form.Group controlId="formEmail">
+                  <h5>Email: </h5>
+                  <FormControl
+                    size="sm"
+                    type="email"
+                    name="Email"
+                    value={this.state.Email}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Change Email"
+                  />
+                </Form.Group>
+              </Row>
+
+              <Row>
+                <Link to={`/users/${this.state.Username}`}>
+                  <Button
+                    type="link"
+                    size="md"
+                    block
+                    onClick={(e) => this.handleUpdate(e)}
+                  >
+                    Save changes
+                  </Button>
+                </Link>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 }

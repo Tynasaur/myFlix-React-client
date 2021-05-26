@@ -18,10 +18,9 @@ export class DirectorView extends React.Component {
               <Card.Title>Name: {director.Name}</Card.Title>
               <Card.Text>Biography: {director.Bio}</Card.Text>
               <Card.Text>Birthday: {director.Birthday}</Card.Text>
-              <Card.Text>Other movies directed by {director.Name}</Card.Text>
+              {/* <Card.Text>Other movies directed by {director.Name}</Card.Text> */}
               {/* directorSearch */}
             </Card.Body>
-
             <Button onClick={() => onBackClick()} className="genre-view">
               Back
             </Button>
@@ -32,12 +31,11 @@ export class DirectorView extends React.Component {
   }
 }
 
-
 DirectorView.propTypes = {
   director: PropTypes.shape({
     Name: PropTypes.string.isRequired,
     Bio: PropTypes.string.isRequired,
-    Birthday: PropTypes.string.isRequired,
+    Birthday: PropTypes.string,
   }).isRequired,
   onBackClick: PropTypes.func.isRequired,
 };

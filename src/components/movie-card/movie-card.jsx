@@ -1,26 +1,42 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Row } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
 export class MovieCard extends React.Component {
+  
+  addFavoriteMovie(user, movieId, token) {
+    axios
+      .post(`https://thainas-myflix.herokuapp.com/users/${user}/${movieId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((user) => {
+        console.log(user.movies);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  }
+
   render() {
-    const { movie } = this.props;
-    // const FavoriteComponent = props.FavoriteComponent;
+    const { movie, addFavoriteMovie } = this.props;
 
     return (
       <Card>
         <div className="fav-image">
           <Card.Img variant="top" src={movie.ImagePath} />
-          <div className="overlay d-flex align-items-center"></div>
           <Card.Body>
             <Card.Title>{movie.Title}</Card.Title>
             <Card.Text>{movie.Description}</Card.Text>
             <Link to={`/movies/${movie._id}`}>
               <Button variant="link">Open</Button>
             </Link>
-            {/* <FavoriteComponent /> */}
+            <Row></Row>
+            <Button onClick={addFavoriteMovie}>Add to favorites</Button>
+            {/* <Button className="" onClick={(e) => handleSubmit(e)}>
+          Add to favorite
+        </Button> */}
           </Card.Body>
         </div>
       </Card>

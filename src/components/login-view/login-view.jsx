@@ -1,32 +1,33 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Redirect } from "react-router";
 
-export function LoginView() {
-  const [username, setUsername] = useState(""),
-    [password, setPassword] = useState(""),
-    [redirect, setRedirect] = usestate("false");
+export function LoginView(props) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //Send a request to the server for authentication
+    /* Send a request to the server for authentication */
     axios
       .post("https://thainas-myflix.herokuapp.com/login", {
         Username: username,
         Password: password,
       })
-      .then(response => {
-        onLogin(response.data);
-        setRedirect(true);
+      .then((response) => {
+        const data = response.data;
+        props.onLoggedIn(data);
       })
       .catch((e) => {
         console.log("no such user");
       });
   };
 
-  if (redirect) return <Redirect to={"/"} />;
+
+
 
   return (
     <Form>

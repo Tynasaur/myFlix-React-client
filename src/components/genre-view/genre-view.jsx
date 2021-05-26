@@ -16,20 +16,18 @@ export class GenreView extends React.Component {
             <Card.Body>
               <Card.Title>Name: {genre.Name}</Card.Title>
               <Card.Text>Description: {genre.Description}</Card.Text>
-           
-              <Card.Text>Other movies in {genre.Name} genre</Card.Text>
+              {/* <Card.Text>Other movies in {genre.Name} genre</Card.Text> */}
               {/* genreSearch */}
             </Card.Body>
             <Button onClick={() => onBackClick()} className="genre-view">
-          Back
-        </Button>
+              Back
+            </Button>
           </Card>
         </Col>
       </Row>
     );
   }
 }
-
 
 GenreView.propTypes = {
   genre: PropTypes.shape({

@@ -7,25 +7,24 @@ import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 
 export class MovieView extends React.Component {
-  //  handleSubmit = (e) => {
-  //       e.preventDefault();
-  //       const favMovie = { title, movieId, description }
-  //       const title = this.props.Title
-  //       const movieId = this.props._id
 
-  //       // addToFavorites(username, match.params.title);
-  //       // getProfile(username, token);
-  //     }; //edit
+
+   handleSubmit = (e) => {
+        e.preventDefault();
+        const favoriteMovie = { title, movieId, description }
+        const title = this.props.Title
+        const movieId = this.props._id
+
+        addToFavorites(username, match.params.title);
+        getProfile(username, token);
+      }; //edit
 
   render() {
     const { movie, onBackClick } = this.props;
 
-    console.log(this.props, "movielog");
+    
 
-    // const goBack = () => {
-    //   history.push("/");
-    // }; //edit
-
+ 
     return (
       <Card>
         <Card.Img variant="top" src={movie.ImagePath} />
@@ -33,16 +32,20 @@ export class MovieView extends React.Component {
           <Card.Title>Title: {movie.Title}</Card.Title>
           <Card.Text>Description: {movie.Description}</Card.Text>
         </Card.Body>
-        <Link to={`/directors/${movie.Director.Name}`}>
-          <Button variant="link">Director: {movie.Director}</Button>
-        </Link>
-
-        <Link to={`/genres/${movie.Genre}`}>
-          <Button variant="link">Genre: {movie.Genre}</Button>
-        </Link>
-        {/* <Button className="" onClick={(e) => handleSubmit(e)}>
-          Add to favorite
-        </Button> */}
+        <Card.Text>
+          Director:
+          <Link to={`/directors/${movie.Director.Name}`}>
+            <Button variant="link"> {movie.Director.Name}</Button>
+          </Link>
+        </Card.Text>
+        <Card.Text>
+          Genre:
+          <Link to={`/genres/${movie.Genre.Name}`}>
+            <Button variant="link"> {movie.Genre.Name}</Button>
+          </Link>
+        </Card.Text>
+    
+     
         <Button onClick={() => onBackClick()} className="movie-view">
           Back
         </Button>
