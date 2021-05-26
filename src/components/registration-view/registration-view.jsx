@@ -28,13 +28,14 @@ export function RegistrationView(props) {
   };
 
   return (
-    <Form>
+    <Form >
       <Form.Group controlId="formUsername">
         <Form.Label>Username:</Form.Label>
         <Form.Control
           type="text"
           placeholder="me@google.com"
           value={username}
+          required
           onChange={(e) => setUsername(e.target.value)}
         />
       </Form.Group>
@@ -45,6 +46,7 @@ export function RegistrationView(props) {
           type="email"
           placeholder="me@google.com"
           value={email}
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
       </Form.Group>
@@ -55,6 +57,7 @@ export function RegistrationView(props) {
           type="password"
           placeholder="Enter your password"
           value={password}
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>

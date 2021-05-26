@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
+
 export class ProfileView extends React.Component {
   constructor(props) {
     super(props);
@@ -48,7 +49,24 @@ export class ProfileView extends React.Component {
       });
   }
 
-  removeFavoriteMovie(movie) {
+
+  addFavoriteMovie( movieId) {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+    axios
+      .post(`https://thainas-myflix.herokuapp.com/users/${user}/${movieId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((user) => {
+        console.log(user.movies);
+        localStorage.setItem("user");
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  }
+  
+  removeFavoriteMovie() {
     const token = localStorage.getItem("token");
     const url =
       "https://thainas-myflix.herokuapp.com/users/" +
@@ -61,9 +79,7 @@ export class ProfileView extends React.Component {
       })
       .then((response) => {
         console.log(response);
-        this.componentDidMount();
-        // location.reload();
-        alert(movie.Title + " has been removed from your Favorites.");
+       
       });
   }
 

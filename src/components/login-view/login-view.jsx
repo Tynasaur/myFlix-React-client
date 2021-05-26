@@ -37,6 +37,7 @@ export function LoginView(props) {
           type="text"
           placeholder="me@google.com"
           value={username}
+          required
           onChange={(e) => setUsername(e.target.value)}
         />
       </Form.Group>
@@ -47,6 +48,7 @@ export function LoginView(props) {
           type="password"
           placeholder="Enter your password"
           value={password}
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
       </Form.Group>

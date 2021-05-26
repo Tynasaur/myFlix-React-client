@@ -16,7 +16,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import Button from "react-bootstrap/Button";
 
 export default class MainView extends React.Component {
   constructor() {
@@ -55,22 +54,7 @@ export default class MainView extends React.Component {
       });
   }
 
-
-  addFavoriteMovie(user, movieId, token) {
-    axios
-      .post(`https://thainas-myflix.herokuapp.com/users/${user}/${movieId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((user) => {
-        console.log(user.movies);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }
-
   
-
   onMovieClick(movie) {
     this.setState({
       selectedMovie: movie,
@@ -93,7 +77,6 @@ export default class MainView extends React.Component {
       register,
     });
   }
-
 
   render() {
     const { movies, user } = this.state;
@@ -132,6 +115,7 @@ export default class MainView extends React.Component {
               ));
             }}
           />
+
           <Route
             path="/register"
             render={() => {
@@ -163,6 +147,7 @@ export default class MainView extends React.Component {
               );
             }}
           />
+
           <Route
             path="/update/:Username"
             render={() => {

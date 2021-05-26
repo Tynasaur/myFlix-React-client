@@ -5,14 +5,17 @@ import { Card, Button, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export class MovieCard extends React.Component {
-  
-  addFavoriteMovie(user, movieId, token) {
+
+  addFavoriteMovie( movieId) {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
     axios
       .post(`https://thainas-myflix.herokuapp.com/users/${user}/${movieId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((user) => {
         console.log(user.movies);
+        localStorage.setItem("user");
       })
       .catch((err) => {
         console.log(err.response);
@@ -20,7 +23,7 @@ export class MovieCard extends React.Component {
   }
 
   render() {
-    const { movie, addFavoriteMovie } = this.props;
+    const { movie } = this.props;
 
     return (
       <Card>
@@ -32,11 +35,14 @@ export class MovieCard extends React.Component {
             <Link to={`/movies/${movie._id}`}>
               <Button variant="link">Open</Button>
             </Link>
-            <Row></Row>
-            <Button onClick={addFavoriteMovie}>Add to favorites</Button>
-            {/* <Button className="" onClick={(e) => handleSubmit(e)}>
-          Add to favorite
-        </Button> */}
+            <Row>
+              {/* <Button onClick={() => this.handleAdd(movie)}>
+                Add to favourite
+              </Button> */}
+              <Button onClick={() => this.addFavoriteMovie(movie)}>
+                add Favorite
+              </Button>
+            </Row>
           </Card.Body>
         </div>
       </Card>
