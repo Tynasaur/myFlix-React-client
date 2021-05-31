@@ -10,7 +10,7 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { ProfileView } from "../profile-view/profile-view";
 import { RegistrationView } from "../registration-view/registration-view";
-import UpdateProfile from "../updateProfile-view/updateProfile-view";
+
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
