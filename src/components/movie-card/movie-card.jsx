@@ -4,6 +4,8 @@ import { Card, Button, Row } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
+import './movie-card.scss';
+
 export class MovieCard extends React.Component {
 
   addFavoriteMovie( movieId) {
@@ -26,7 +28,7 @@ export class MovieCard extends React.Component {
     const { movie } = this.props;
 
     return (
-      <Card>
+      <div>
         <div className="fav-image">
           <Card.Img variant="top" src={movie.ImagePath} />
           <Card.Body>
@@ -39,13 +41,13 @@ export class MovieCard extends React.Component {
               {/* <Button onClick={() => this.handleAdd(movie)}>
                 Add to favourite
               </Button> */}
-              <Button onClick={() => this.addFavoriteMovie(movie)}>
+              <button onClick={() => this.addFavoriteMovie(movie)}>
                 add Favorite
-              </Button>
+              </button>
             </Row>
           </Card.Body>
         </div>
-      </Card>
+      </div>
     );
   }
 }

@@ -5,6 +5,10 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import PropTypes from "prop-types";
 
+import '../../index.scss';
+import './director-view.scss';
+
+
 export class DirectorView extends React.Component {
   render() {
     // const directorSearch = (movie) => movie.Director.Name === match.params.name;
@@ -12,20 +16,22 @@ export class DirectorView extends React.Component {
 
     return (
       <Row>
-        <Col>
-          <Card className="director-view">
+        <div style={{ backgroundColor: "#1B1D24"}} >
+          <div className="director-view" style={{ backgroundColor: "#1E2127", width: "700px", minHeight: "1069px"}}>
             <Card.Body>
-              <Card.Title>Name: {director.Name}</Card.Title>
-              <Card.Text>Biography: {director.Bio}</Card.Text>
-              <Card.Text>Birthday: {director.Birthday}</Card.Text>
+              <h2 style={{ padding: "10px 10px", textAlign: "center", color: 'white'}}>{director.Name}</h2>
+              <p style={{ color: 'white'}}>Biography {director.Bio}</p>
+              <div>Born {director.Birthday}</div>
+              {/* <div>Died {director.Deathdate}</div> */}
+
               {/* <Card.Text>Other movies directed by {director.Name}</Card.Text> */}
               {/* directorSearch */}
             </Card.Body>
-            <Button onClick={() => onBackClick()} className="genre-view">
+            <button className="my-flix" onClick={() => onBackClick()}>
               Back
-            </Button>
-          </Card>
-        </Col>
+            </button>
+          </div>
+        </div>
       </Row>
     );
   }
