@@ -2,12 +2,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
+
+import "./login-view.scss";
 
 export function LoginView(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,36 +27,39 @@ export function LoginView(props) {
       });
   };
 
-
-
-
   return (
-    <Form>
-      <Form.Group controlId="formUsername">
-        <Form.Label>Username:</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="me@google.com"
-          value={username}
-          required
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </Form.Group>
+    <div>
+      <Form className="login-view ">
+        <Form.Group controlId="formUsername">
+          <Form.Label>Username:</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="me@google.com"
+            value={username}
+            required
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </Form.Group>
 
-      <Form.Group controlId="formPassword">
-        <Form.Label>Password:</Form.Label>
-        <Form.Control
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </Form.Group>
+        <Form.Group controlId="formPassword">
+          <Form.Label>Password:</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Group>
 
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
-        Submit
-      </Button>
-    </Form>
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </Form>
+      <div className="login-view">
+        <p>not registered?</p>
+        <Link to="/register">Register here</Link>
+      </div>
+    </div>
   );
 }

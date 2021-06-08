@@ -1,6 +1,58 @@
-.my-flix {
-  color: steelblue;
+
+.movie-card {
+  padding: 10px;
+  font-size: 15px;
+  font-weight: semibold;
+  color: white;
 }
 
+.movie-image {
+  width: 450px;
+}
 
+.movie-card-div {
+  margin: 10px;
+}
+.director-view {
+  margin-top: 5%;
+}
+
+p {
+  color: white;
+}
+
+.card-title {
+  text-transform: uppercase;
+}
+.genre-view {
+  margin-top: 5%;
+  width: 700px;
+}
+.login-view {
+  color: white;
+  width: 500px;
+  margin: 5% auto;
+}
+.movie-view {
+  padding: 10px;
+  margin: 20px;
+}
+
+.card-title {
+  text-transform: uppercase;
+}
+
+.button {
+  text-align: center;
+}
+.profile-view {
+  margin-top: 5%;
+  color: white;
+  padding: 20px;
+}
+.registration-view {
+  color: white;
+  width: 500px;
+  margin: 5% auto;
+}
 /*# sourceMappingURL=index.d22b8a02.css.map */

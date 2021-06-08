@@ -1,16 +1,20 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
-import Form from "react-bootstrap/Form";
+import Form from 'react-bootstrap/Form';
 
-import { setFilter } from "../../actions/actions";
+import { setFilter } from '../../actions/actions';
 
 function VisibilityFilterInput(props) {
-  <Form.Control
-    onChange={(e) => props.setFilter(e.target.value)}
+  return <Form.Control
+    onChange={e => props.setFilter(e.target.value)}
     value={props.visibilityFilter}
-    placeholder="filter"
+    placeholder="search movies"
   />;
 }
 
-export default connnect(null, { setFilter })(VisibilityFilterInput);
+export default connect(
+  null,
+  { setFilter }
+)(VisibilityFilterInput);
+

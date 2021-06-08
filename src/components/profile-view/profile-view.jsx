@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
+import "./profile-view.scss";
 
 export class ProfileView extends React.Component {
   constructor(props) {
@@ -49,8 +50,7 @@ export class ProfileView extends React.Component {
       });
   }
 
-
-  addFavoriteMovie( movieId) {
+  addFavoriteMovie(movieId) {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     axios
@@ -65,7 +65,7 @@ export class ProfileView extends React.Component {
         console.log(err.response);
       });
   }
-  
+
   removeFavoriteMovie() {
     const token = localStorage.getItem("token");
     const url =
@@ -79,19 +79,7 @@ export class ProfileView extends React.Component {
       })
       .then((response) => {
         console.log(response);
-       
       });
-  }
-
-  onLoggedOut() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    this.setState({
-      user: null,
-    });
-    console.log("logout successful");
-    alert("You have been successfully logged out");
-    window.open("/", "_self");
   }
 
   handleDelete() {
@@ -162,12 +150,69 @@ export class ProfileView extends React.Component {
 
     if (!movies) alert("Please sign in");
     return (
-      <div className="userProfile" style={{ display: "flex" }}>
+      <div className="profile-view">
         <Container>
           <Row>
             <Col>
               <Row>
-                <div className="favoriteMovies">
+                <Form.Group>
+                  <h5>Username:</h5>
+                  <FormControl
+                    size="md"
+                    type="text"
+                    name="Username"
+                    value={this.state.Username}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Change username"
+                  />
+                </Form.Group>
+              </Row>
+
+              <Row>
+                <Form.Group controlId="formPassword">
+                  <h5>Password: </h5>
+                  <FormControl
+                    size="md"
+                    type="password"
+                    name="Password"
+                    value={this.state.Password}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Enter your password or Change password"
+                  />
+                </Form.Group>
+              </Row>
+
+              <Row>
+                <Form.Group controlId="formEmail">
+                  <h5>Email: </h5>
+                  <FormControl
+                    size="md"
+                    type="email"
+                    name="Email"
+                    value={this.state.Email}
+                    onChange={(e) => this.handleChange(e)}
+                    placeholder="Change Email"
+                  />
+                </Form.Group>
+              </Row>
+
+              <Row>
+                <Link to={`/users/${this.state.Username}`}>
+                  <Button
+                    type="link"
+                    size="md"
+                    block
+                    onClick={(e) => this.handleUpdate(e)}
+                  >
+                    Save changes
+                  </Button>
+                </Link>
+              </Row>
+            </Col>
+
+            <Col>
+              <Row>
+                <div className="favorite-movies">
                   <h5>Favorite Movies</h5>
                   {FavoriteMovies.map((movie) => {
                     return (
@@ -202,75 +247,11 @@ export class ProfileView extends React.Component {
                   <Form.Group controlId="formDate"></Form.Group>
                 </Form>
               </Row>
-              <Row>
-                <Button
-                  onClick={() => {
-                    this.onLoggedOut();
-                  }}
-                >
-                  Logout
-                </Button>
-              </Row>
-              <Row>
+
+              <Row className="delete-account-btn">
                 <Button onClick={() => this.handleDelete()}>
                   Delete Account
                 </Button>
-              </Row>
-            </Col>
-            <Col>
-              <Row>
-                <Form.Group>
-                  <h5>Username:</h5>
-                  <FormControl
-                    size="sm"
-                    type="text"
-                    name="Username"
-                    value={this.state.Username}
-                    onChange={(e) => this.handleChange(e)}
-                    placeholder="Change username"
-                  />
-                </Form.Group>
-              </Row>
-
-              <Row>
-                <Form.Group controlId="formPassword">
-                  <h5>Password: </h5>
-                  <FormControl
-                    size="sm"
-                    type="password"
-                    name="Password"
-                    value={this.state.Password}
-                    onChange={(e) => this.handleChange(e)}
-                    placeholder="Enter your password or Change password"
-                  />
-                </Form.Group>
-              </Row>
-
-              <Row>
-                <Form.Group controlId="formEmail">
-                  <h5>Email: </h5>
-                  <FormControl
-                    size="sm"
-                    type="email"
-                    name="Email"
-                    value={this.state.Email}
-                    onChange={(e) => this.handleChange(e)}
-                    placeholder="Change Email"
-                  />
-                </Form.Group>
-              </Row>
-
-              <Row>
-                <Link to={`/users/${this.state.Username}`}>
-                  <Button
-                    type="link"
-                    size="md"
-                    block
-                    onClick={(e) => this.handleUpdate(e)}
-                  >
-                    Save changes
-                  </Button>
-                </Link>
               </Row>
             </Col>
           </Row>

@@ -1,0 +1,30 @@
+.card {
+  height: 476px;
+  width: 326px;
+}
+
+.card2 {
+  padding: 10px;
+}
+.my-flix {
+  color: steelblue;
+}
+
+html {
+  background-color: #1B1D24;
+}
+
+.card-title {
+  color: #828d99;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: semibold;
+}
+
+.body {
+  background-color: green;
+  font-family: "Montserrat Alternates", sans-serif;
+  color: #000000;
+  font-size: 1.2em;
+}
+/*# sourceMappingURL=index.17951e9a.css.map */

@@ -1,27 +1,16 @@
 import axios from "axios";
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import { connect } from 'react-redux';
-import '../../index.scss';
+import { connect } from "react-redux";
+import "../../index.scss";
 
+import { setMovies } from "../../actions/actions";
 
-// #0
-import { setMovies } from '../../actions/actions';
-
-
-// we haven't written this one yet
-import MoviesList from '../movies-list/movies-list';
-/* 
-  #1 The rest of components import statements but without the MovieCard's 
-  because it will be imported and used in the MoviesList component rather
-  than in here. 
-*/
-
+import MoviesList from "../movies-list/movies-list";
 //App components
 import { DirectorView } from "../director-view/director-view";
 import { GenreView } from "../genre-view/genre-view";
 import { LoginView } from "../login-view/login-view";
-// import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { ProfileView } from "../profile-view/profile-view";
 import { RegistrationView } from "../registration-view/registration-view";
@@ -31,6 +20,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+//background color
+document.body.style = "background: #131515;";
 
 class MainView extends React.Component {
   constructor() {
@@ -66,7 +57,26 @@ class MainView extends React.Component {
       });
   }
 
-  
+  getUser(token) {
+    // console.log(localStorage.getItem("user"));
+    let url =
+      "https://thainas-myflix.herokuapp.com/users/" +
+      localStorage.getItem("user");
+    axios
+      .get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        //console.log(response);
+        this.setState({
+          username: response.data.Username,
+          password: response.data.Password,
+          email: response.data.Email,
+          favoriteMovies: response.data.FavoriteMovies,
+        });
+      });
+  }
+
   onMovieClick(movie) {
     this.setState({
       selectedMovie: movie,
@@ -90,19 +100,30 @@ class MainView extends React.Component {
     });
   }
 
+  onLoggedOut() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    this.setState({
+      user: null,
+    });
+    console.log("logout successful");
+    alert("You have been successfully logged out");
+    window.open("/", "_self");
+  }
+
   render() {
     let { movies } = this.props;
     let { user } = this.state;
 
     return (
       <Router>
-        <Navbar>
-          <Navbar.Brand href="">myFlix</Navbar.Brand>
+        <Navbar bg="dark" variant="dark">
+          <Nav.Link href="/">myFlix</Nav.Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav"></Navbar.Collapse>
           <Nav>
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/user/:Username">User Profile</Nav.Link>
+            <Nav.Link href={`/user/${user}`}>My Account</Nav.Link>
+            <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>
           </Nav>
         </Navbar>
 
@@ -117,19 +138,9 @@ class MainView extends React.Component {
                     <LoginView onLoggedIn={(user) => this.onLoggedIn(user)} />
                   </Col>
                 );
-                //#6
-                if (movies.length === 0) return <div className="main-view" />;
+              if (movies.length === 0) return <div className="main-view" />;
 
-                 return <MoviesList movies={movies}/>;
-              // return movies.map((m) => (
-              //   <Col md={3} key={m._id}>
-              //     <MovieCard
-              //       movie={m}
-              //       addToFavorites={this.addToFavorites}
-              //       user={localStorage.getItem("user")}
-              //     />
-              //   </Col>
-              // ));
+              return <MoviesList movies={movies} />;
             }}
           />
 
@@ -155,7 +166,7 @@ class MainView extends React.Component {
                   </Col>
                 );
               return (
-                <Col md={8}>
+                <Col sm={6}>
                   <MovieView
                     movie={movies.find((m) => m._id === match.params.movieId)}
                     onBackClick={() => history.goBack()}
@@ -166,12 +177,7 @@ class MainView extends React.Component {
           />
 
           <Route
-            path="/update/:Username"
-            render={() => {
-              return <UpdateProfile />;
-            }}
-          />
-          <Route
+            className="main-view justify-content-md-center"
             path="/directors/:Name"
             render={({ match, history }) => {
               if (movies.length === 0) return <div className="main-view" />;
@@ -190,6 +196,7 @@ class MainView extends React.Component {
           />
 
           <Route
+            className="main-view justify-content-md-center"
             path="/genres/:Name"
             render={({ match, history }) => {
               if (!movies) return <div className="main-view" />;
@@ -206,12 +213,12 @@ class MainView extends React.Component {
         </Row>
 
         <Route
-          path="/user/:Username"
+          path="/user"
           render={() => {
             {
               return (
                 <Row>
-                  <Col md={8}>
+                  <Col md={12}>
                     <ProfileView user={user} movies={movies} />
                   </Col>
                 </Row>
@@ -224,10 +231,8 @@ class MainView extends React.Component {
   }
 }
 
-// #7
-let mapStateToProps = state => {
-  return { movies: state.movies }
-}
+let mapStateToProps = (state) => {
+  return { movies: state.movies };
+};
 
-// #8
-export default connect(mapStateToProps, { setMovies } )(MainView);
+export default connect(mapStateToProps, { setMovies })(MainView);

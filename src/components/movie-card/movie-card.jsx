@@ -1,14 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Button, Row } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
-import './movie-card.scss';
+import "./movie-card.scss";
 
 export class MovieCard extends React.Component {
-
-  addFavoriteMovie( movieId) {
+  addFavoriteMovie(movieId) {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     axios
@@ -28,25 +27,26 @@ export class MovieCard extends React.Component {
     const { movie } = this.props;
 
     return (
-      <div>
-        <div className="fav-image">
-          <Card.Img variant="top" src={movie.ImagePath} />
+      <div className="movie-card-div">
+        <Card className="movie-card" style={{ backgroundColor: "#1E2127" }}>
+          <Card.Title style={{ color: "white" }}>{movie.Title}</Card.Title>
+          <Card.Img
+            className="movie-image"
+            variant="top"
+            src={movie.ImagePath}
+          />
           <Card.Body>
-            <Card.Title>{movie.Title}</Card.Title>
-            <Card.Text>{movie.Description}</Card.Text>
-            <Link to={`/movies/${movie._id}`}>
-              <Button variant="link">Open</Button>
-            </Link>
-            <Row>
-              {/* <Button onClick={() => this.handleAdd(movie)}>
-                Add to favourite
-              </Button> */}
-              <button onClick={() => this.addFavoriteMovie(movie)}>
+            <div className="button">
+              <Link to={`/movies/${movie._id}`}>
+                <Button variant="link">See Details</Button>
+              </Link>
+
+              <Button onClick={() => this.addFavoriteMovie(movie)}>
                 add Favorite
-              </button>
-            </Row>
+              </Button>
+            </div>
           </Card.Body>
-        </div>
+        </Card>
       </div>
     );
   }
